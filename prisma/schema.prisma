@@ -1,0 +1,427 @@
+// This is your Prisma schema file
+// Learn more about it: https://pris.ly/d/prisma-schema
+
+// 🔧 CONFIGURATION
+// This section tells Prisma how to connect to the database and generate the client
+
+generator client {
+  provider = "prisma-client-js"
+  // This generates TypeScript types for all your models
+  // After running 'npx prisma generate', you'll have full autocomplete!
+}
+
+datasource db {
+  provider  = "postgresql"  // We're using PostgreSQL via Supabase
+  url       = env("DATABASE_URL")  // Connection string from .env.local
+  directUrl = env("DIRECT_URL")    // Direct connection for migrations
+}
+
+// 📝 ENUMS
+// Enums are predefined sets of values - think of them as "options" a field can have
+
+enum Role {
+  ADMIN           // Full system access
+  DOCTOR          // Can manage patients, appointments, prescriptions
+  NURSE           // Can view patients, update records
+  RECEPTIONIST    // Can manage appointments, basic patient info
+  PATIENT         // Can view their own data only
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+  PREFER_NOT_TO_SAY
+}
+
+enum AppointmentStatus {
+  SCHEDULED       // Appointment is booked
+  CONFIRMED       // Patient confirmed attendance
+  IN_PROGRESS     // Currently happening
+  COMPLETED       // Finished successfully
+  CANCELLED       // Cancelled by patient or staff
+  NO_SHOW         // Patient didn't show up
+}
+
+enum AppointmentType {
+  CONSULTATION    // Regular checkup
+  FOLLOW_UP       // Follow-up visit
+  EMERGENCY       // Emergency visit
+  SURGERY         // Surgical procedure
+  LAB_TEST        // Laboratory testing
+  VACCINATION     // Vaccine administration
+  THERAPY         // Physical/mental therapy
+  OTHER
+}
+
+enum BillingStatus {
+  PENDING         // Not yet paid
+  PAID            // Fully paid
+  PARTIALLY_PAID  // Partial payment made
+  OVERDUE         // Payment is late
+  CANCELLED       // Bill cancelled
+}
+
+enum PaymentMethod {
+  CASH
+  CREDIT_CARD
+  DEBIT_CARD
+  INSURANCE
+  BANK_TRANSFER
+  MOBILE_PAYMENT
+}
+
+// 👤 USER MODEL
+// Base authentication model for all users in the system
+
+model User {
+  id            String    @id @default(cuid())  // Unique ID (cuid = collision-resistant unique identifier)
+  email         String    @unique  // Email must be unique across all users
+  password      String    // Hashed password (never store plain text!)
+  role          Role      @default(PATIENT)  // Default role is PATIENT
+  
+  // Profile information
+  firstName     String
+  lastName      String
+  phoneNumber   String?   // Optional field (? means nullable)
+  avatar        String?   // URL to profile picture
+  
+  // Account status
+  isActive      Boolean   @default(true)  // Can be deactivated without deletion
+  emailVerified DateTime? // When email was verified (null if not verified)
+  
+  // Timestamps (useful for tracking)
+  createdAt     DateTime  @default(now())  // Auto-set to current time on creation
+  updatedAt     DateTime  @updatedAt       // Auto-updated on every change
+  lastLogin     DateTime?                  // Track last login time
+  
+  // 🔗 RELATIONSHIPS
+  // One user can be associated with one patient/doctor/staff record
+  patient       Patient?       // Optional - only if role is PATIENT
+  doctor        Doctor?        // Optional - only if role is DOCTOR
+  staff         Staff?         // Optional - only if role is NURSE/RECEPTIONIST/ADMIN
+  auditLogs     AuditLog[]     // All actions this user has performed
+  
+  @@index([email])  // Index for faster email lookups during login
+  @@map("users")    // Actual table name in database
+}
+
+// 🏥 PATIENT MODEL
+// Extended profile for patients
+
+model Patient {
+  id                String   @id @default(cuid())
+  userId            String   @unique  // Links to User model (one-to-one)
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // onDelete: Cascade means if User is deleted, Patient is also deleted
+  
+  // Personal Information
+  dateOfBirth       DateTime
+  gender            Gender
+  bloodType         String?
+  address           String?
+  city              String?
+  state             String?
+  zipCode           String?
+  country           String
+  
+  // Emergency Contact
+  emergencyContactName  String?
+  emergencyContactPhone String?
+  emergencyContactRelation String?
+  
+  // Insurance Information
+  insuranceProvider String?
+  insurancePolicyNumber String?
+  insuranceGroupNumber String?
+  
+  // Medical Information
+  allergies         String?  // Store as comma-separated or JSON
+  chronicConditions String?  // Ongoing health conditions
+  currentMedications String? // Current medications
+  
+  // Timestamps
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  
+  // 🔗 RELATIONSHIPS
+  appointments      Appointment[]
+  medicalRecords    MedicalRecord[]
+  prescriptions     Prescription[]
+  billings          Billing[]
+  
+  @@index([userId])
+  @@map("patients")
+}
+
+// 👨‍⚕️ DOCTOR MODEL
+// Extended profile for doctors
+
+model Doctor {
+  id                String   @id @default(cuid())
+  userId            String   @unique
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Professional Information
+  specialization    String   // e.g., "Cardiologist", "Pediatrician"
+  licenseNumber     String   @unique  // Medical license must be unique
+  qualification     String   // e.g., "MD, MBBS"
+  experienceYears   Int      // Years of experience
+  
+  // Work Information
+  department        String?
+  consultationFee   Float?   // Fee per consultation
+  
+  // Availability (you can expand this with a separate Schedule model later)
+  isAvailable       Boolean  @default(true)
+  
+  // Bio
+  bio               String?  // Doctor's profile description
+  
+  // Timestamps
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  
+  // 🔗 RELATIONSHIPS
+  appointments      Appointment[]
+  medicalRecords    MedicalRecord[]
+  prescriptions     Prescription[]
+  
+  @@index([userId])
+  @@index([specialization])  // Fast lookup by specialization
+  @@map("doctors")
+}
+
+// 👨‍💼 STAFF MODEL
+// For nurses, receptionists, and admin staff
+
+model Staff {
+  id                String   @id @default(cuid())
+  userId            String   @unique
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Work Information
+  position          String   // "Nurse", "Receptionist", "Admin"
+  department        String?
+  employeeId        String   @unique
+  
+  // Timestamps
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  
+  @@index([userId])
+  @@map("staff")
+}
+
+// 📅 APPOINTMENT MODEL
+// Manages all appointments
+
+model Appointment {
+  id                String   @id @default(cuid())
+  
+  // Relationships
+  patientId         String
+  patient           Patient  @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  
+  doctorId          String
+  doctor            Doctor   @relation(fields: [doctorId], references: [id], onDelete: Restrict)
+  // onDelete: Restrict prevents deleting a doctor if they have appointments
+  
+  // Appointment Details
+  appointmentDate   DateTime // Date and time of appointment
+  duration          Int      @default(30)  // Duration in minutes
+  type              AppointmentType
+  status            AppointmentStatus @default(SCHEDULED)
+  
+  // Additional Information
+  reason            String?  // Why patient is visiting
+  notes             String?  // Special instructions
+  
+  // Reminders
+  reminderSent      Boolean  @default(false)  // Track if reminder was sent
+  
+  // Timestamps
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  
+  @@index([patientId])
+  @@index([doctorId])
+  @@index([appointmentDate])  // Fast lookup by date
+  @@map("appointments")
+}
+
+// 📋 MEDICAL RECORD MODEL
+// Patient medical history and visit notes
+
+model MedicalRecord {
+  id                String   @id @default(cuid())
+  
+  // Relationships
+  patientId         String
+  patient           Patient  @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  
+  doctorId          String
+  doctor            Doctor   @relation(fields: [doctorId], references: [id], onDelete: Restrict)
+  
+  // Record Details
+  visitDate         DateTime
+  diagnosis         String   // Primary diagnosis
+  symptoms          String   // Patient symptoms
+  vitalSigns        String?  // JSON: { temperature, bloodPressure, heartRate, etc. }
+  
+  // SOAP Notes (Standard medical documentation format)
+  // S = Subjective (what patient says)
+  // O = Objective (what doctor observes)
+  // A = Assessment (diagnosis)
+  // P = Plan (treatment plan)
+  subjective        String?
+  objective         String?
+  assessment        String?
+  plan              String?
+  
+  // Attachments
+  attachments       String?  // JSON array of file URLs (lab results, X-rays, etc.)
+  
+  // Follow-up
+  followUpDate      DateTime?
+  followUpNotes     String?
+  
+  // Timestamps
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  
+  @@index([patientId])
+  @@index([doctorId])
+  @@index([visitDate])
+  @@map("medical_records")
+}
+
+// 💊 PRESCRIPTION MODEL
+// Medication prescriptions
+
+model Prescription {
+  id                String   @id @default(cuid())
+  
+  // Relationships
+  patientId         String
+  patient           Patient  @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  
+  doctorId          String
+  doctor            Doctor   @relation(fields: [doctorId], references: [id], onDelete: Restrict)
+  
+  // Prescription Details
+  medicationName    String
+  dosage            String   // e.g., "500mg"
+  frequency         String   // e.g., "Twice daily"
+  duration          String   // e.g., "7 days"
+  quantity          Int      // Number of units
+  
+  // Instructions
+  instructions      String?  // "Take with food", etc.
+  
+  // Refills
+  refills           Int      @default(0)  // Number of refills allowed
+  refillsRemaining  Int      @default(0)
+  
+  // Status
+  isActive          Boolean  @default(true)
+  
+  // Dates
+  prescribedDate    DateTime @default(now())
+  startDate         DateTime
+  endDate           DateTime?
+  
+  // Timestamps
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  
+  @@index([patientId])
+  @@index([doctorId])
+  @@map("prescriptions")
+}
+
+// 💰 BILLING MODEL
+// Financial transactions and invoices
+
+model Billing {
+  id                String   @id @default(cuid())
+  
+  // Relationships
+  patientId         String
+  patient           Patient  @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  
+  // Invoice Details
+  invoiceNumber     String   @unique  // e.g., "INV-2023-0001"
+  
+  // Amount
+  subtotal          Float    // Amount before tax
+  tax               Float    @default(0)
+  discount          Float    @default(0)
+  total             Float    // Final amount to pay
+  
+  // Payment
+  status            BillingStatus @default(PENDING)
+  paymentMethod     PaymentMethod?
+  paidAmount        Float    @default(0)
+  balance           Float    // Remaining amount
+  
+  // Dates
+  billDate          DateTime @default(now())
+  dueDate           DateTime
+  paidDate          DateTime?
+  
+  // Details
+  description       String   // What the bill is for
+  items             String?  // JSON array of line items
+  
+  // Notes
+  notes             String?
+  
+  // Timestamps
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  
+  @@index([patientId])
+  @@index([invoiceNumber])
+  @@index([status])
+  @@map("billings")
+}
+
+// 📊 AUDIT LOG MODEL
+// Track all important actions for compliance and security
+
+model AuditLog {
+  id                String   @id @default(cuid())
+  
+  // Who performed the action
+  userId            String
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // What was done
+  action            String   // e.g., "LOGIN", "VIEW_PATIENT", "UPDATE_RECORD", "DELETE_USER"
+  entity            String?  // What was affected: "User", "Patient", "Appointment"
+  entityId          String?  // ID of the affected record
+  
+  // Details
+  description       String?  // Human-readable description
+  ipAddress         String?  // IP address of the user
+  userAgent         String?  // Browser/device information
+  
+  // Changes (for audit trail)
+  changes           String?  // JSON of before/after values
+  
+  // Timestamp
+  createdAt         DateTime @default(now())
+  
+  @@index([userId])
+  @@index([action])
+  @@index([createdAt])  // Fast lookup by date for reports
+  @@map("audit_logs")
+}
+
+// 🎉 That's it! This schema defines your entire database structure.
+// Next steps:
+// 1. Set up Supabase and get your DATABASE_URL
+// 2. Run: npx prisma migrate dev --name init
+// 3. Run: npx prisma generate
+// 4. Start building your application!
