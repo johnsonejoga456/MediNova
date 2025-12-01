@@ -1,8 +1,6 @@
 "use client";
 import { useForm } from "react-hook-form";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth, db } from "@/lib/firebaseConfig";
-import { doc, getDoc } from "firebase/firestore";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -16,27 +14,66 @@ export default function LoginPage() {
     setLoading(true);
     setError("");
     try {
-      const userCred = await signInWithEmailAndPassword(auth, data.email, data.password);
-      const snap = await getDoc(doc(db, "users", userCred.user.uid));
-      const role = snap.exists() ? snap.data()?.role : "patient";
-      router.push(`/dashboard/${role}`);
+      const result = await signIn("credentials", {
+        redirect: false,
+        email: data.email,
+        password: data.password,
+      });
+
+      if (result?.error) {
+        setError("Invalid email or password");
+      } else {
+        // Redirect based on role is handled in middleware or we can fetch session here
+        // For now, redirect to dashboard
+        router.push("/dashboard");
+        router.refresh();
+      }
     } catch (err: any) {
-      setError(err.message);
+      setError("An error occurred. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
-      <form onSubmit={handleSubmit(onSubmit)} className="bg-white shadow-md p-8 rounded-2xl w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-4 text-center">Sign In</h2>
-        <input {...register("email")} placeholder="Email" className="input" type="email" required />
-        <input {...register("password")} placeholder="Password" className="input mt-3" type="password" required />
-        {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
-        <button disabled={loading} type="submit" className="btn mt-5 w-full">
+    <main className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="bg-white shadow-lg p-8 rounded-2xl w-full max-w-md">
+        <h2 className="text-3xl font-bold mb-2 text-center text-gray-900">Sign In</h2>
+        <p className="text-center text-gray-600 mb-6">Welcome back to Healthcare System</p>
+
+        <input
+          {...register("email")}
+          placeholder="Email"
+          className="input border border-gray-300 p-3 w-full rounded-lg mb-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          type="email"
+          required
+        />
+        <input
+          {...register("password")}
+          placeholder="Password"
+          className="input border border-gray-300 p-3 w-full rounded-lg mb-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          type="password"
+          required
+        />
+
+        {error && <p className="text-red-500 text-sm mt-2 bg-red-50 p-3 rounded-lg">{error}</p>}
+
+        <button
+          disabled={loading}
+          type="submit"
+          className="btn mt-5 w-full bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition font-semibold disabled:bg-gray-400"
+        >
           {loading ? "Signing in..." : "Login"}
         </button>
+
+        <div className="mt-6 text-center">
+          <p className="text-gray-600">
+            Don't have an account?{" "}
+            <a href="/auth/register" className="text-blue-600 hover:text-blue-700 font-semibold">
+              Register here
+            </a>
+          </p>
+        </div>
       </form>
     </main>
   );
