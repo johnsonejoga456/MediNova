@@ -128,6 +128,24 @@ export default function DashboardPage() {
                                         Manage nurses and receptionists
                                     </p>
                                 </a>
+                                <a href="/dashboard/appointments" className="p-4 bg-teal-50 rounded-lg border border-teal-200 hover:bg-teal-100 transition cursor-pointer">
+                                    <h4 className="font-semibold text-teal-900">Appointments</h4>
+                                    <p className="text-sm text-teal-700 mt-1">
+                                        Manage all appointments
+                                    </p>
+                                </a>
+                                <a href="/dashboard/medical-records" className="p-4 bg-purple-50 rounded-lg border border-purple-200 hover:bg-purple-100 transition cursor-pointer">
+                                    <h4 className="font-semibold text-purple-900">Medical Records</h4>
+                                    <p className="text-sm text-purple-700 mt-1">
+                                        View all patient medical records
+                                    </p>
+                                </a>
+                                <a href="/dashboard/prescriptions" className="p-4 bg-pink-50 rounded-lg border border-pink-200 hover:bg-pink-100 transition cursor-pointer">
+                                    <h4 className="font-semibold text-pink-900">Prescriptions</h4>
+                                    <p className="text-sm text-pink-700 mt-1">
+                                        View all patient prescriptions
+                                    </p>
+                                </a>
                             </div>
                         </div>
                     )}
@@ -144,62 +162,23 @@ export default function DashboardPage() {
                                         View and manage your patients
                                     </p>
                                 </a>
-                                <div className="p-4 bg-green-50 rounded-lg border border-green-200">
-                                    <h4 className="font-semibold text-green-900">Appointments</h4>
+                                <a href="/dashboard/appointments" className="p-4 bg-green-50 rounded-lg border border-green-200 hover:bg-green-100 transition cursor-pointer">
+                                    <h4 className="font-semibold text-green-900">My Schedule</h4>
                                     <p className="text-sm text-green-700 mt-1">
-                                        Today's schedule and upcoming appointments
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-
-                    {session.user?.role === "PATIENT" && (
-                        <div className="space-y-4">
-                            <p className="text-gray-600">
-                                Welcome! View your medical records and book appointments.
-                            </p>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                                <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
-                                    <h4 className="font-semibold text-blue-900">My Appointments</h4>
-                                    <p className="text-sm text-blue-700 mt-1">
-                                        View upcoming visits
-                                    </p>
-                                </div>
-                                <div className="p-4 bg-green-50 rounded-lg border border-green-200">
-                                    <h4 className="font-semibold text-green-900">Medical Records</h4>
-                                    <p className="text-sm text-green-700 mt-1">
-                                        Access your health information
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-
-                    {(session.user?.role === "NURSE" || session.user?.role === "RECEPTIONIST") && (
-                        <div className="space-y-4">
-                            <p className="text-gray-600">
-                                Welcome, {session.user?.role}! Manage patients and appointments.
-                            </p>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                                <a href="/dashboard/patients" className="p-4 bg-blue-50 rounded-lg border border-blue-200 hover:bg-blue-100 transition cursor-pointer">
-                                    <h4 className="font-semibold text-blue-900">Patient Management</h4>
-                                    <p className="text-sm text-blue-700 mt-1">
-                                        Manage patient records
+                                        Today's appointments and upcoming schedule
                                     </p>
                                 </a>
-                                <div className="p-4 bg-green-50 rounded-lg border border-green-200">
-                                    <h4 className="font-semibold text-green-900">Schedule</h4>
-                                    <p className="text-sm text-green-700 mt-1">
-                                        Manage appointments
+                                <a href="/dashboard/medical-records" className="p-4 bg-purple-50 rounded-lg border border-purple-200 hover:bg-purple-100 transition cursor-pointer">
+                                    <h4 className="font-semibold text-purple-900">Medical Records</h4>
+                                    <p className="text-sm text-purple-700 mt-1">
+                                        Create and view patient records
                                     </p>
-                                </div>
+                                </a>
                             </div>
                         </div>
                     )}
                 </div>
 
-                {/* Quick Stats */}
                 <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div className="bg-white rounded-lg shadow-md p-6">
                         <div className="flex items-center justify-between">
