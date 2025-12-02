@@ -110,24 +110,24 @@ export default function DashboardPage() {
                                 As an admin, you have full access to the system.
                             </p>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-                                <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
-                                    <h4 className="font-semibold text-blue-900">User Management</h4>
+                                <a href="/dashboard/patients" className="p-4 bg-blue-50 rounded-lg border border-blue-200 hover:bg-blue-100 transition cursor-pointer">
+                                    <h4 className="font-semibold text-blue-900">Patient Management</h4>
                                     <p className="text-sm text-blue-700 mt-1">
-                                        Manage all system users
+                                        Manage patient records
                                     </p>
-                                </div>
-                                <div className="p-4 bg-green-50 rounded-lg border border-green-200">
-                                    <h4 className="font-semibold text-green-900">System Settings</h4>
+                                </a>
+                                <a href="/dashboard/doctors" className="p-4 bg-green-50 rounded-lg border border-green-200 hover:bg-green-100 transition cursor-pointer">
+                                    <h4 className="font-semibold text-green-900">Doctor Management</h4>
                                     <p className="text-sm text-green-700 mt-1">
-                                        Configure system options
+                                        Manage doctors and specializations
                                     </p>
-                                </div>
-                                <div className="p-4 bg-purple-50 rounded-lg border border-purple-200">
-                                    <h4 className="font-semibold text-purple-900">Reports</h4>
+                                </a>
+                                <a href="/dashboard/staff" className="p-4 bg-purple-50 rounded-lg border border-purple-200 hover:bg-purple-100 transition cursor-pointer">
+                                    <h4 className="font-semibold text-purple-900">Staff Management</h4>
                                     <p className="text-sm text-purple-700 mt-1">
-                                        View system analytics
+                                        Manage nurses and receptionists
                                     </p>
-                                </div>
+                                </a>
                             </div>
                         </div>
                     )}
@@ -138,12 +138,12 @@ export default function DashboardPage() {
                                 Welcome, Doctor! Manage your patients and appointments here.
                             </p>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                                <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
+                                <a href="/dashboard/patients" className="p-4 bg-blue-50 rounded-lg border border-blue-200 hover:bg-blue-100 transition cursor-pointer">
                                     <h4 className="font-semibold text-blue-900">My Patients</h4>
                                     <p className="text-sm text-blue-700 mt-1">
                                         View and manage your patients
                                     </p>
-                                </div>
+                                </a>
                                 <div className="p-4 bg-green-50 rounded-lg border border-green-200">
                                     <h4 className="font-semibold text-green-900">Appointments</h4>
                                     <p className="text-sm text-green-700 mt-1">
@@ -182,12 +182,12 @@ export default function DashboardPage() {
                                 Welcome, {session.user?.role}! Manage patients and appointments.
                             </p>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                                <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
-                                    <h4 className="font-semibold text-blue-900">Patient Check-in</h4>
+                                <a href="/dashboard/patients" className="p-4 bg-blue-50 rounded-lg border border-blue-200 hover:bg-blue-100 transition cursor-pointer">
+                                    <h4 className="font-semibold text-blue-900">Patient Management</h4>
                                     <p className="text-sm text-blue-700 mt-1">
-                                        Check in patients
+                                        Manage patient records
                                     </p>
-                                </div>
+                                </a>
                                 <div className="p-4 bg-green-50 rounded-lg border border-green-200">
                                     <h4 className="font-semibold text-green-900">Schedule</h4>
                                     <p className="text-sm text-green-700 mt-1">
