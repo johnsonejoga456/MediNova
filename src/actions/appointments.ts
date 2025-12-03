@@ -105,37 +105,57 @@ export async function getAppointments(params?: {
 
 // Get single appointment by ID
 export async function getAppointmentById(id: string) {
-  specialization: true,
+  const session = await checkPermissions();
+
+  const appointment = await prisma.appointment.findUnique({
+    where: { id },
+    include: {
+      patient: {
+        include: {
+          user: {
+            select: {
+              id: true,
+              firstName: true,
+              lastName: true,
+              email: true,
+              phoneNumber: true,
+            },
+          },
+        },
+      },
+      doctor: {
+        include: {
+          user: true,
         },
       },
     },
   });
 
-if (!appointment) {
-  throw new Error("Appointment not found");
-}
-
-// Permission check: patients can only view their own
-if (session.user.role === "PATIENT") {
-  const patient = await prisma.patient.findUnique({
-    where: { userId: session.user.id },
-  });
-  if (appointment.patientId !== patient?.id) {
-    throw new Error("Unauthorized");
+  if (!appointment) {
+    throw new Error("Appointment not found");
   }
-}
 
-// Doctors can only view their own
-if (session.user.role === "DOCTOR") {
-  const doctor = await prisma.doctor.findUnique({
-    where: { userId: session.user.id },
-  });
-  if (appointment.doctorId !== doctor?.id) {
-    throw new Error("Unauthorized");
+  // Permission check: patients can only view their own
+  if (session.user.role === "PATIENT") {
+    const patient = await prisma.patient.findUnique({
+      where: { userId: session.user.id },
+    });
+    if (appointment.patientId !== patient?.id) {
+      throw new Error("Unauthorized");
+    }
   }
-}
 
-return appointment;
+  // Doctors can only view their own
+  if (session.user.role === "DOCTOR") {
+    const doctor = await prisma.doctor.findUnique({
+      where: { userId: session.user.id },
+    });
+    if (appointment.doctorId !== doctor?.id) {
+      throw new Error("Unauthorized");
+    }
+  }
+
+  return appointment;
 }
 
 // Get doctor's availability for a specific date

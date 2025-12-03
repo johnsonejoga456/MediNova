@@ -109,7 +109,6 @@ export async function getPrescriptionById(id: string) {
                             lastName: true,
                         },
                     },
-                    specialization: true,
                 },
             },
         },

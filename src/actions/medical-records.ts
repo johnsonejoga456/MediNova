@@ -55,11 +55,38 @@ export async function getMedicalRecords(params?: {
         if (params.startDate) where.visitDate.gte = params.startDate;
         if (params.endDate) where.visitDate.lte = params.endDate;
     }
-    visitDate: "desc",
+
+    const records = await prisma.medicalRecord.findMany({
+        where,
+        include: {
+            patient: {
+                include: {
+                    user: {
+                        select: {
+                            firstName: true,
+                            lastName: true,
+                            email: true,
+                        },
+                    },
+                },
+            },
+            doctor: {
+                include: {
+                    user: {
+                        select: {
+                            firstName: true,
+                            lastName: true,
+                        },
+                    },
+                },
+            },
+        },
+        orderBy: {
+            visitDate: "desc",
         },
     });
 
-return records;
+    return records;
 }
 
 // Get single medical record by ID
@@ -76,7 +103,6 @@ export async function getMedicalRecordById(id: string) {
                             firstName: true,
                             lastName: true,
                             email: true,
-                            dateOfBirth: true,
                             phoneNumber: true,
                         },
                     },
@@ -90,7 +116,6 @@ export async function getMedicalRecordById(id: string) {
                             lastName: true,
                         },
                     },
-                    specialization: true,
                 },
             },
         },
