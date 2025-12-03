@@ -173,7 +173,7 @@ export async function createStaff(data: {
     const tempPassword = `Staff${Math.random().toString(36).slice(-8)}!`;
     const hashedPassword = await bcrypt.hash(tempPassword, 10);
 
-    // ✅ FIX: Generate a random Employee ID (e.g., EMP-K92L)
+    // FIX: Generate a random Employee ID (e.g., EMP-K92L)
     // You can adjust this format to match your hospital's needs
     const employeeId = `EMP-${Math.random().toString(36).substr(2, 6).toUpperCase()}`;
 
