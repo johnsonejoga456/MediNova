@@ -12,6 +12,7 @@ import {
     HeartIcon,
     ArrowRightOnRectangleIcon,
     BanknotesIcon,
+    ChartBarIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 
@@ -150,6 +151,13 @@ export default function DashboardPage() {
                                 description="View all patient prescriptions"
                                 Icon={BeakerIcon}
                                 gradient="from-pink-500 to-pink-600"
+                            />
+                            <DashboardCard
+                                href="/dashboard/analytics"
+                                title="Analytics & Reports"
+                                description="View insights and data visualization"
+                                Icon={ChartBarIcon}
+                                gradient="from-indigo-500 to-indigo-600"
                             />
                         </div>
                     </div>

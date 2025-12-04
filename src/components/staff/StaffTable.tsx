@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 
 type Staff = {
     id: string;
-    department: string;
+    department: string | null;
     position: string;
     user: {
         firstName: string;
