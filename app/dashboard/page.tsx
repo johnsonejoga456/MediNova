@@ -55,7 +55,7 @@ export default function DashboardPage() {
                                 Healthcare System
                             </h1>
                             <p className="text-sm text-gray-600 mt-1">
-                                Welcome back, {session.user?.firstName || session.user?.email}
+                                Welcome back, {session.user?.email}
                             </p>
                         </div>
                         <button
