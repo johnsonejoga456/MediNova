@@ -125,7 +125,7 @@ export default async function AppointmentDetailsPage({
                                 <div>
                                     <p className="text-sm text-gray-600">Age</p>
                                     <p className="font-medium">
-                                        {calculateAge(appointment.patient.user.dateOfBirth)} years
+                                        {calculateAge(appointment.patient.dateOfBirth)} years
                                     </p>
                                 </div>
                                 <div>
