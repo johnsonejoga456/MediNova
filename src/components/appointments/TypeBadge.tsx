@@ -59,13 +59,21 @@ export default function TypeBadge({ type }: { type: AppointmentType }) {
                     dot: "bg-indigo-500",
                     label: "Therapy",
                 };
-            case "ROUTINE_CHECKUP":
+            case "CONSULTATION":
                 return {
                     bg: "bg-cyan-50",
                     text: "text-cyan-700",
                     border: "border-cyan-200",
                     dot: "bg-cyan-500",
-                    label: "Routine Checkup",
+                    label: "Consultation",
+                };
+            case "VACCINATION":
+                return {
+                    bg: "bg-green-50",
+                    text: "text-green-700",
+                    border: "border-green-200",
+                    dot: "bg-green-500",
+                    label: "Vaccination",
                 };
             case "OTHER":
                 return {
