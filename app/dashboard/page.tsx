@@ -11,6 +11,7 @@ import {
     BeakerIcon,
     HeartIcon,
     ArrowRightOnRectangleIcon,
+    BanknotesIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 
@@ -123,11 +124,25 @@ export default function DashboardPage() {
                                 gradient="from-green-500 to-green-600"
                             />
                             <DashboardCard
+                                href="/dashboard/lab-tests"
+                                title="Laboratory Tests"
+                                description="Manage all laboratory tests and results"
+                                Icon={BeakerIcon}
+                                gradient="from-cyan-500 to-cyan-600"
+                            />
+                            <DashboardCard
                                 href="/dashboard/medical-records"
                                 title="Medical Records"
                                 description="Access all patient medical records"
                                 Icon={ClipboardDocumentListIcon}
                                 gradient="from-indigo-500 to-indigo-600"
+                            />
+                            <DashboardCard
+                                href="/dashboard/billing/invoices"
+                                title="Billing & Invoices"
+                                description="Manage invoices and track payments"
+                                Icon={BanknotesIcon}
+                                gradient="from-emerald-500 to-emerald-600"
                             />
                             <DashboardCard
                                 href="/dashboard/prescriptions"
@@ -143,7 +158,7 @@ export default function DashboardPage() {
                 {session.user?.role === "DOCTOR" && (
                     <div>
                         <h3 className="text-lg font-semibold text-gray-900 mb-4">Your Tools</h3>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             <DashboardCard
                                 href="/dashboard/appointments"
                                 title="My Appointments"
@@ -157,6 +172,13 @@ export default function DashboardPage() {
                                 description="Access your patient records"
                                 Icon={UserIcon}
                                 gradient="from-teal-500 to-teal-600"
+                            />
+                            <DashboardCard
+                                href="/dashboard/lab-tests/order"
+                                title="Order Lab Tests"
+                                description="Request laboratory tests for patients"
+                                Icon={BeakerIcon}
+                                gradient="from-cyan-500 to-cyan-600"
                             />
                             <DashboardCard
                                 href="/dashboard/medical-records"
@@ -188,11 +210,25 @@ export default function DashboardPage() {
                                 gradient="from-blue-500 to-blue-600"
                             />
                             <DashboardCard
+                                href="/dashboard/lab-tests"
+                                title="My Lab Tests"
+                                description="View your laboratory test results"
+                                Icon={BeakerIcon}
+                                gradient="from-cyan-500 to-cyan-600"
+                            />
+                            <DashboardCard
                                 href="/dashboard/prescriptions"
                                 title="My Prescriptions"
                                 description="View and manage your prescriptions"
                                 Icon={BeakerIcon}
                                 gradient="from-pink-500 to-pink-600"
+                            />
+                            <DashboardCard
+                                href="/dashboard/billing/invoices"
+                                title="My Invoices"
+                                description="View your billing and payment history"
+                                Icon={BanknotesIcon}
+                                gradient="from-emerald-500 to-emerald-600"
                             />
                             <DashboardCard
                                 href="/dashboard/medical-records"

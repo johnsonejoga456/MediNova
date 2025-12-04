@@ -71,6 +71,13 @@ enum PaymentMethod {
   MOBILE_PAYMENT
 }
 
+enum LabTestStatus {
+  PENDING         // Test has been ordered, awaiting processing
+  IN_PROGRESS     // Test is being processed
+  COMPLETED       // Test is complete, results available
+  CANCELLED       // Test was cancelled
+}
+
 // 👤 USER MODEL
 // Base authentication model for all users in the system
 
@@ -148,7 +155,8 @@ model Patient {
   appointments      Appointment[]
   medicalRecords    MedicalRecord[]
   prescriptions     Prescription[]
-  billings          Billing[]
+  labTests          LabTest[]
+  invoices          Invoice[]
   
   @@index([userId])
   @@map("patients")
@@ -186,6 +194,7 @@ model Doctor {
   appointments      Appointment[]
   medicalRecords    MedicalRecord[]
   prescriptions     Prescription[]
+  labTests          LabTest[]
   
   @@index([userId])
   @@index([specialization])  // Fast lookup by specialization
@@ -340,53 +349,6 @@ model Prescription {
   @@map("prescriptions")
 }
 
-// 💰 BILLING MODEL
-// Financial transactions and invoices
-
-model Billing {
-  id                String   @id @default(cuid())
-  
-  // Relationships
-  patientId         String
-  patient           Patient  @relation(fields: [patientId], references: [id], onDelete: Cascade)
-  
-  // Invoice Details
-  invoiceNumber     String   @unique  // e.g., "INV-2023-0001"
-  
-  // Amount
-  subtotal          Float    // Amount before tax
-  tax               Float    @default(0)
-  discount          Float    @default(0)
-  total             Float    // Final amount to pay
-  
-  // Payment
-  status            BillingStatus @default(PENDING)
-  paymentMethod     PaymentMethod?
-  paidAmount        Float    @default(0)
-  balance           Float    // Remaining amount
-  
-  // Dates
-  billDate          DateTime @default(now())
-  dueDate           DateTime
-  paidDate          DateTime?
-  
-  // Details
-  description       String   // What the bill is for
-  items             String?  // JSON array of line items
-  
-  // Notes
-  notes             String?
-  
-  // Timestamps
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @updatedAt
-  
-  @@index([patientId])
-  @@index([invoiceNumber])
-  @@index([status])
-  @@map("billings")
-}
-
 // 📊 AUDIT LOG MODEL
 // Track all important actions for compliance and security
 
@@ -417,6 +379,110 @@ model AuditLog {
   @@index([action])
   @@index([createdAt])  // Fast lookup by date for reports
   @@map("audit_logs")
+}
+
+// 🧪 LAB TEST MODEL
+// Laboratory test orders and results
+
+model LabTest {
+  id              String        @id @default(cuid())
+  patientId       String
+  doctorId        String
+  
+  // Test Information
+  testType        String        // e.g., "BLOOD", "URINE", "IMAGING", "BIOPSY"
+  testName        String        // e.g., "Complete Blood Count", "Chest X-Ray"
+  status          LabTestStatus @default(PENDING)
+  
+  // Dates
+  orderedDate     DateTime      @default(now())
+  completedDate   DateTime?
+  
+  // Results
+  results         String?       // Test results (can be JSON for complex data)
+  interpretation  String?       // Doctor's interpretation of results
+  referenceRange  String?       // Normal reference ranges
+  notes           String?       // Additional notes or instructions
+  attachments     String?       // JSON array of file URLs
+  
+  // Timestamps
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  
+  // Relationships
+  patient         Patient       @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  doctor          Doctor        @relation(fields: [doctorId], references: [id])
+  
+  @@index([patientId])
+  @@index([doctorId])
+  @@index([status])
+  @@index([orderedDate])
+  @@map("lab_tests")
+}
+
+// 💰 INVOICE MODEL
+// Billing invoices for patients
+
+model Invoice {
+  id              String        @id @default(cuid())
+  patientId       String
+  invoiceNumber   String        @unique
+  
+  // Amounts
+  amount          Float
+  amountPaid      Float         @default(0)
+  status          BillingStatus @default(PENDING)
+  
+  // Dates
+  issueDate       DateTime      @default(now())
+  dueDate         DateTime
+  paidDate        DateTime?
+  
+  // Details
+  description     String
+  items           String        // JSON array of line items
+  notes           String?
+  
+  // Timestamps
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  
+  // Relationships
+  patient         Patient       @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  payments        Payment[]
+  
+  @@index([patientId])
+  @@index([status])
+  @@index([invoiceNumber])
+  @@index([issueDate])
+  @@index([dueDate])
+  @@map("invoices")
+}
+
+// 💳 PAYMENT MODEL
+// Payment records for invoices
+
+model Payment {
+  id              String        @id @default(cuid())
+  invoiceId       String
+  
+  // Payment details
+  amount          Float
+  paymentMethod   PaymentMethod
+  paymentDate     DateTime      @default(now())
+  transactionId   String?
+  notes           String?
+  
+  // Timestamps
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  
+  // Relationships
+  invoice         Invoice       @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  
+  @@index([invoiceId])
+  @@index([paymentDate])
+  @@map("payments")
 }
 
 // 🎉 That's it! This schema defines your entire database structure.
