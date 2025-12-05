@@ -1,0 +1,5 @@
+# Vercel Output Configuration
+# This tells Vercel how to handle our app
+
+# No special configuration needed
+# Just ensure environment variables are set in Vercel dashboard
