@@ -4,24 +4,24 @@ A comprehensive, full-stack healthcare management system built with **Next.js 16
 
 ---
 
-## 🎯 Project Overview
+##  Project Overview
 
 MediNova is a production-ready healthcare management system designed for hospitals, clinics, and medical facilities. It streamlines patient care, appointment scheduling, medical records, prescriptions, laboratory tests, and billing operations.
 
 ### **Key Features**
-- 👥 Multi-role authentication (Admin, Doctor, Nurse, Receptionist, Patient)
-- 📅 Appointment scheduling with conflict detection
-- 📋 Electronic medical records (EMR)
-- 💊 Prescription management
-- 🧪 Laboratory test ordering and results
-- 💰 Billing, invoicing, and payment tracking
-- 📊 Analytics dashboard with charts
-- 🔍 Global search across all entities
-- 🔐 Role-based access control (RBAC)
+-  Multi-role authentication (Admin, Doctor, Nurse, Receptionist, Patient)
+-  Appointment scheduling with conflict detection
+-  Electronic medical records (EMR)
+-  Prescription management
+-  Laboratory test ordering and results
+-  Billing, invoicing, and payment tracking
+-  Analytics dashboard with charts
+-  Global search across all entities
+-  Role-based access control (RBAC)
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 ### **Frontend**
 - **Next.js 16** - React framework with App Router
