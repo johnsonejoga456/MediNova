@@ -47,7 +47,7 @@ MediNova is a production-ready healthcare management system designed for hospita
 
 ---
 
-## 📦 Installation
+Installation
 
 ### **Prerequisites**
 - Node.js 18+ and npm
@@ -101,7 +101,7 @@ Visit `http://localhost:3000`
 
 ---
 
-## 👥 User Roles & Permissions
+User Roles & Permissions
 
 ### **1. Admin**
 **Full system access**
@@ -146,7 +146,7 @@ Visit `http://localhost:3000`
 
 ---
 
-## 🔄 Application Workflow
+Application Workflow
 
 ### **Patient Registration & Onboarding**
 1. **Receptionist/Admin** creates patient account
@@ -193,7 +193,7 @@ Visit `http://localhost:3000`
 
 ---
 
-## 📊 Core Modules
+Core Modules
 
 ### **1. Patient Management**
 - Complete patient profiles
@@ -347,7 +347,7 @@ Visit `http://localhost:3000`
 
 ---
 
-## 🎨 Design System
+Design System
 
 ### **Color Palette**
 ```css
