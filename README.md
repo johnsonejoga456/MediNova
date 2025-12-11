@@ -303,7 +303,7 @@ Core Modules
 
 ---
 
-## 🗄️ Database Schema
+## Database Schema
 
 ### **Core Models**
 
@@ -372,7 +372,7 @@ All UI uses **Heroicons (24/outline)** for consistency:
 
 ---
 
-## 🔐 Security Features
+## Security Features
 
 ### **Authentication**
 - Bcrypt password hashing
@@ -394,7 +394,7 @@ All UI uses **Heroicons (24/outline)** for consistency:
 
 ---
 
-## 🚀 Deployment
+##  Deployment
 
 ### **Vercel (Recommended)**
 
@@ -425,7 +425,7 @@ Compatible with any Node.js hosting:
 
 ---
 
-## 📚 Project Structure
+##  Project Structure
 
 ```
 healthcare-system/
@@ -482,17 +482,17 @@ healthcare-system/
 
 ---
 
-## 🔮 Future Enhancements
+##  Future Enhancements
 
 ### **Planned Features**
-- 📧 **Email Notifications** - Appointment reminders, test results
-- 📄 **PDF Reports** - Generate printable medical reports
-- 📁 **File Uploads** - Profile pictures, test attachments, medical documents
-- 📱 **Mobile App** - React Native companion app
-- 🔔 **Real-time Notifications** - WebSocket-based updates
-- 📊 **Advanced Reporting** - Custom report builder
-- 🌐 **Multi-language Support** - Internationalization (i18n)
-- 🔗 **API Integration** - Third-party lab systems, insurance providers
+-  **Email Notifications** - Appointment reminders, test results
+-  **PDF Reports** - Generate printable medical reports
+-  **File Uploads** - Profile pictures, test attachments, medical documents
+-  **Mobile App** - React Native companion app
+-  **Real-time Notifications** - WebSocket-based updates
+-  **Advanced Reporting** - Custom report builder
+-  **Multi-language Support** - Internationalization (i18n)
+-  **API Integration** - Third-party lab systems, insurance providers
 
 ### **Potential Improvements**
 - Unit & integration testing (Jest, Playwright)
