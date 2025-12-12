@@ -502,17 +502,6 @@ healthcare-system/
 - Appointment calendar integration (Google Calendar)
 - Telemedicine video calls
 
----
-
-## 🤝 Contributing
-
-This is a production MVP. For feature requests or bug reports:
-1. Open an issue
-2. Fork the repository
-3. Create a feature branch
-4. Submit a pull request
-
----
 
 ## 📄 License
 
