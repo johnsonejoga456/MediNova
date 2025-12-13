@@ -503,21 +503,11 @@ healthcare-system/
 - Telemedicine video calls
 
 
-## 📄 License
+## License
 
 This project is proprietary software developed for healthcare management.
 
----
-
-## 👨‍💻 Developer
-
-**Johnson Ejoga**
-- GitHub: [@johnsonejoga456](https://github.com/johnsonejoga456)
-- Project: MediNova Healthcare System
-
----
-
-## 🎉 Acknowledgments
+##  Acknowledgments
 
 Built with modern technologies:
 - Next.js team for the amazing framework
@@ -526,16 +516,12 @@ Built with modern technologies:
 - Prisma for type-safe database operations
 - The open-source community
 
----
-
-## 📞 Support
+##  Support
 
 For technical support or questions:
 - Create an issue on GitHub
 - Review the documentation above
 - Check existing issues for solutions
-
----
 
 **Version:** 1.0.0 (MVP)  
 **Last Updated:** December 2024  
