@@ -425,62 +425,7 @@ Compatible with any Node.js hosting:
 
 ---
 
-##  Project Structure
 
-```
-healthcare-system/
-├── app/                      # Next.js App Router
-│   ├── auth/                 # Authentication pages
-│   │   ├── login/
-│   │   └── register/
-│   ├── dashboard/            # Main application
-│   │   ├── analytics/        # Analytics & reports
-│   │   ├── appointments/     # Appointments
-│   │   ├── billing/          # Invoices & payments
-│   │   ├── doctors/          # Doctor management
-│   │   ├── lab-tests/        # Laboratory tests
-│   │   ├── medical-records/  # Medical records
-│   │   ├── patients/         # Patient management
-│   │   ├── prescriptions/    # Prescriptions
-│   │   └── staff/            # Staff management
-│   ├── globals.css           # Global styles
-│   ├── layout.tsx            # Root layout
-│   └── page.tsx              # Landing page
-├── prisma/
-│   └── schema.prisma         # Database schema
-├── src/
-│   ├── actions/              # Server actions
-│   │   ├── analytics.ts
-│   │   ├── appointments.ts
-│   │   ├── auth.ts
-│   │   ├── doctors.ts
-│   │   ├── invoices.ts
-│   │   ├── lab-tests.ts
-│   │   ├── medical-records.ts
-│   │   ├── patients.ts
-│   │   ├── payments.ts
-│   │   ├── prescriptions.ts
-│   │   ├── search.ts
-│   │   └── staff.ts
-│   ├── components/           # Reusable components
-│   │   ├── appointments/
-│   │   ├── billing/
-│   │   ├── lab-tests/
-│   │   ├── prescriptions/
-│   │   ├── search/
-│   │   └── staff/
-│   ├── lib/
-│   │   └── db/
-│   │       └── prisma.ts     # Prisma client
-│   └── auth.ts               # NextAuth config
-├── .env.local                # Environment variables
-├── next.config.ts            # Next.js config
-├── package.json              # Dependencies
-├── tailwind.config.ts        # Tailwind config
-└── tsconfig.json             # TypeScript config
-```
-
----
 
 ##  Future Enhancements
 
