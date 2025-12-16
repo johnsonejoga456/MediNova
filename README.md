@@ -142,9 +142,7 @@ User Roles & Permissions
 - Access medical records
 - View prescriptions
 - Check lab test results
-- View invoices and payment history
-
----
+- View invoices and payment history 
 
 Application Workflow
 
@@ -191,7 +189,6 @@ Application Workflow
 4. Track patient growth
 5. See department distribution
 
----
 
 Core Modules
 
