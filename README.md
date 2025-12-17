@@ -420,9 +420,6 @@ Compatible with any Node.js hosting:
 - AWS
 - DigitalOcean
 
----
-
-
 
 ##  Future Enhancements
 
