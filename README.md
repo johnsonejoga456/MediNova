@@ -2,7 +2,7 @@
 
 A comprehensive, full-stack healthcare management system built with **Next.js 16**, **TypeScript**, **Prisma**, and **Supabase**. This application provides complete patient, doctor, appointment, billing, and laboratory management with role-based access control.
 
----
+
 
 ##  Project Overview
 
@@ -19,7 +19,6 @@ MediNova is a production-ready healthcare management system designed for hospita
 -  Global search across all entities
 -  Role-based access control (RBAC)
 
----
 
 ## Tech Stack
 
@@ -45,7 +44,6 @@ MediNova is a production-ready healthcare management system designed for hospita
 - `zod` - Schema validation
 - `date-fns` - Date utilities
 
----
 
 Installation
 
