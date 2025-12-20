@@ -296,7 +296,6 @@ Core Modules
 - `src/components/search/GlobalSearch.tsx` - Search component
 - `src/actions/search.ts` - Search actions
 
----
 
 ## Database Schema
 
@@ -340,8 +339,6 @@ Core Modules
 - `BillingStatus`: PENDING, PAID, PARTIALLY_PAID, OVERDUE, CANCELLED
 - `PaymentMethod`: CASH, CREDIT_CARD, DEBIT_CARD, INSURANCE, BANK_TRANSFER, MOBILE_PAYMENT
 
----
-
 Design System
 
 ### **Color Palette**
@@ -364,8 +361,6 @@ Design System
 ### **Icons**
 All UI uses **Heroicons (24/outline)** for consistency:
 - UserIcon, CalendarIcon, BeakerIcon, BanknotesIcon, ChartBarIcon, etc.
-
----
 
 ## Security Features
 
