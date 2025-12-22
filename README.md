@@ -1,5 +1,6 @@
 # MediNova - Healthcare Management System
 
+
 A comprehensive, full-stack healthcare management system built with **Next.js 16**, **TypeScript**, **Prisma**, and **Supabase**. This application provides complete patient, doctor, appointment, billing, and laboratory management with role-based access control.
 
 
