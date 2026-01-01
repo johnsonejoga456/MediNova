@@ -381,8 +381,6 @@ All UI uses **Heroicons (24/outline)** for consistency:
 - XSS protection (React auto-escaping)
 - CSRF protection (NextAuth)
 
----
-
 ##  Deployment
 
 ### **Vercel (Recommended)**
@@ -432,7 +430,6 @@ Compatible with any Node.js hosting:
 - Data export functionality
 - Appointment calendar integration (Google Calendar)
 - Telemedicine video calls
-
 
 ## License
 
